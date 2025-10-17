@@ -4,6 +4,7 @@ import PoleSize from '../types/PoleSize';
 import Game from "../logic/Game";
 import Cell from "../types/Cell";
 import "./ConnectFour.css"
+import CellElem from "./Cell";
 
 //TODO DELETE
 const GAME_CONFIG: PoleSize = {
@@ -44,28 +45,6 @@ const ConnectFourGame: React.FC = () => {
     }
   }, [game]);
 
-  const renderCell = (cell: Cell, rowIndex: number, colIndex: number) => {
-    let cellClass = 'cell';
-    let pieceClass = '';
-
-    if (cell === Cell.FirstPlayer) {
-      cellClass += ' player-1';
-      pieceClass = 'piece player-1';
-    } else if (cell === Cell.SecondPlayer) {
-      cellClass += ' player-2';
-      pieceClass = 'piece player-2';
-    }
-
-    return (
-      <div
-        key={`${rowIndex}-${colIndex}`}
-        className={cellClass}
-        onClick={() => handleColumnClick(colIndex)}
-      >
-        {pieceClass && <div className={pieceClass}/>}
-      </div>
-    );
-  };
 
   if (!game || !drawBoard || drawBoard.length === 0) {
     return <div>Загрузка игры...</div>;
@@ -82,15 +61,14 @@ const ConnectFourGame: React.FC = () => {
       <div className="board">
         {drawBoard.map((row, rowIndex) => (
           <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => renderCell(cell, rowIndex, colIndex))}
+            {row.map((cell, colIndex) =>
+              <CellElem cell={cell} rowIndex={rowIndex} colIndex={colIndex} handleColumnClick={handleColumnClick}/>
+            )}
           </div>
         ))}
       </div>
 
-      <button
-        className="undo-button"
-        onClick={handleUndo}
-      >
+      <button className="undo-button" onClick={handleUndo}>
         Отменить ход
       </button>
     </div>
