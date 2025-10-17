@@ -1,7 +1,7 @@
 import Player from "../types/Player";
 import Cell from "../types/Cell";
 
-export default function CellByPlayer(player: Player) {
+export default function CellByPlayer(player: Player): Cell {
   switch (player) {
     case Player.firstPlayer:
       return Cell.FirstPlayer;

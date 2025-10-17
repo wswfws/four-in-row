@@ -1,45 +1,43 @@
 import StackNode from "./StackNode";
 
-
 class Stack<T> {
-  private top: null | StackNode<T>;
-  private size: number;
+  private readonly top: null | StackNode<T>;
+  private readonly size: number;
 
-  constructor() {
-    this.top = null;
-    this.size = 0;
+  constructor(top: null | StackNode<T> = null, size: number = 0) {
+    this.top = top;
+    this.size = size;
   }
 
-  push(value: T) {
+  push(value: T): Stack<T> {
     const newNode = new StackNode<T>(value);
     newNode.next = this.top;
-    this.top = newNode;
-    this.size++;
+    return new Stack(newNode, this.size + 1);
   }
 
-  pop() {
+  pop(): [T | null, Stack<T>] {
     if (this.isEmpty()) {
-      return null;
+      return [null, this];
     }
     const poppedValue = this.top!.value;
-    this.top = this.top!.next;
-    this.size--;
-    return poppedValue;
+    const newTop = this.top!.next;
+    const newStack = new Stack(newTop, this.size - 1);
+    return [poppedValue, newStack];
   }
 
-  peek() {
+  peek(): T | null {
     return this.isEmpty() ? null : this.top!.value;
   }
 
-  isEmpty() {
+  isEmpty(): boolean {
     return this.size === 0;
   }
 
-  getSize() {
+  getSize(): number {
     return this.size;
   }
 
-  toString() {
+  toString(): string {
     let current = this.top;
     let stackValues = [];
     while (current) {
