@@ -5,26 +5,62 @@ import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
 
-//TODO DELETE
 const GAME_CONFIG: PoleSize = {height: 6, width: 7};
 
-const ConnectFourGame: React.FC = () => {
-  const [game, setGame] = useState<Game>(new Game(GAME_CONFIG));
+interface GameHistory {
+  games: Game[];
+  currentIndex: number;
+}
 
-  const board = game.toArray();
-  const currentPlayer = game.getCurrentPlayer();
+const ConnectFourGame: React.FC = () => {
+  const [gameHistory, setGameHistory] = useState<GameHistory>({
+    games: [new Game(GAME_CONFIG)],
+    currentIndex: 0
+  });
+
+  const currentGame = gameHistory.games[gameHistory.currentIndex];
+  const board = currentGame.toArray();
+  const currentPlayer = currentGame.getCurrentPlayer();
   const isPlayer1 = currentPlayer === Player.firstPlayer;
-  const winner = game.getWinner();
+  const winner = currentGame.getWinner();
+
+  const canUndo = gameHistory.currentIndex > 0;
+  const canRedo = gameHistory.currentIndex < gameHistory.games.length - 1;
 
   const handleColumnClick = useCallback((columnIndex: number) => {
-    if (!winner) {
-      setGame(g =>g.move(columnIndex));
+    if (!winner && currentGame.canMove(columnIndex)) {
+      const nextGame = currentGame.move(columnIndex);
+      setGameHistory(prev => ({
+        games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
+        currentIndex: prev.currentIndex + 1
+      }));
     }
-  }, [winner]);
+  }, [winner, currentGame]);
 
-  const handleUndo = () => setGame(g => g); //todo
-  const handleRedo = () => setGame(g => g);//todo
-  const handleRestart = () => setGame(g => g);//todo
+  const handleUndo = useCallback(() => {
+    if (canUndo) {
+      setGameHistory(prev => ({
+        ...prev,
+        currentIndex: prev.currentIndex - 1
+      }));
+    }
+  }, [canUndo]);
+
+  const handleRedo = useCallback(() => {
+    if (canRedo) {
+      setGameHistory(prev => ({
+        ...prev,
+        currentIndex: prev.currentIndex + 1
+      }));
+    }
+  }, [canRedo]);
+
+  const handleRestart = useCallback(() => {
+    setGameHistory({
+      games: [new Game(GAME_CONFIG)],
+      currentIndex: 0
+    });
+  }, []);
 
   return (
     <div className="connect-four">
@@ -57,10 +93,18 @@ const ConnectFourGame: React.FC = () => {
       </div>
 
       <div className="action-buttons">
-        <button className="undo-button" onClick={handleUndo}>
+        <button
+          className="undo-button"
+          onClick={handleUndo}
+          disabled={!canUndo}
+        >
           Отменить ход
         </button>
-        <button className="redo-button" onClick={handleRedo}>
+        <button
+          className="redo-button"
+          onClick={handleRedo}
+          disabled={!canRedo}
+        >
           Возобновить ход
         </button>
         <button className="restart-button" onClick={handleRestart}>

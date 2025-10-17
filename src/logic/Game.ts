@@ -49,6 +49,10 @@ export default class Game {
     return null;
   }
 
+  canMove(column: PositiveNumber): boolean {
+    return this.pole.hasSpaceInColumn(column);
+  }
+
 }
 
 
