@@ -2,8 +2,11 @@ import Stack from "../../../logic/Stack/Stack";
 
 describe('Stack', () => {
   describe('Constructor', () => {
-    it('should create empty stack', () => {
+    it('Если создается новый стек, то он должен быть пустым', () => {
+      // Arrange
       const stack = new Stack<number>();
+
+      // Assert
       expect(stack.isEmpty()).toBe(true);
       expect(stack.getSize()).toBe(0);
       expect(stack.peek()).toBeNull();
@@ -11,37 +14,56 @@ describe('Stack', () => {
   });
 
   describe('push', () => {
-    it('should push elements to stack', () => {
+    it('Если добавляется элемент в пустой стек, то он становится верхним элементом и размер увеличивается до 1', () => {
+      // Arrange
       const stack = new Stack<number>();
 
+      // Act
       stack.push(1);
+
+      // Assert
       expect(stack.peek()).toBe(1);
       expect(stack.getSize()).toBe(1);
       expect(stack.isEmpty()).toBe(false);
+    });
 
+    it('Если добавляется несколько элементов, то верхний элемент всегда последний добавленный', () => {
+      // Arrange
+      const stack = new Stack<number>();
+
+      // Act
+      stack.push(1);
       stack.push(2);
+
+      // Assert
       expect(stack.peek()).toBe(2);
       expect(stack.getSize()).toBe(2);
     });
 
-    it('should handle multiple data types', () => {
+    it('Если добавляются элементы разных типов данных, то стек корректно их хранит', () => {
+      // Arrange
       const stringStack = new Stack<string>();
-      stringStack.push('hello');
-      expect(stringStack.peek()).toBe('hello');
-
       const objectStack = new Stack<{ id: number }>();
+
+      // Act
+      stringStack.push('hello');
       objectStack.push({ id: 1 });
+
+      // Assert
+      expect(stringStack.peek()).toBe('hello');
       expect(objectStack.peek()).toEqual({ id: 1 });
     });
   });
 
   describe('pop', () => {
-    it('should pop elements from stack in LIFO order', () => {
+    it('Если извлекаются элементы из стека, то они возвращаются в порядке LIFO', () => {
+      // Arrange
       const stack = new Stack<number>();
       stack.push(1);
       stack.push(2);
       stack.push(3);
 
+      // Act & Assert
       expect(stack.pop()).toBe(3);
       expect(stack.getSize()).toBe(2);
 
@@ -52,15 +74,20 @@ describe('Stack', () => {
       expect(stack.getSize()).toBe(0);
     });
 
-    it('should return null when popping from empty stack', () => {
+    it('Если извлекается элемент из пустого стека, то возвращается null и размер не меняется', () => {
+      // Arrange
       const stack = new Stack<number>();
+
+      // Act & Assert
       expect(stack.pop()).toBeNull();
       expect(stack.getSize()).toBe(0);
     });
 
-    it('should handle mixed push and pop operations', () => {
+    it('Если выполняются смешанные операции push и pop, то стек ведет себя корректно', () => {
+      // Arrange
       const stack = new Stack<number>();
 
+      // Act & Assert
       stack.push(1);
       stack.push(2);
       expect(stack.pop()).toBe(2);
@@ -73,25 +100,33 @@ describe('Stack', () => {
   });
 
   describe('peek', () => {
-    it('should return top element without removing it', () => {
+    it('Если просматривается верхний элемент, то он возвращается без удаления из стека', () => {
+      // Arrange
       const stack = new Stack<number>();
       stack.push(1);
       stack.push(2);
 
+      // Act & Assert
       expect(stack.peek()).toBe(2);
-      expect(stack.getSize()).toBe(2); // Size unchanged
-      expect(stack.pop()).toBe(2); // Still can pop the same element
+      expect(stack.getSize()).toBe(2); // Размер не изменился
+      expect(stack.pop()).toBe(2); // Все еще можно извлечь тот же элемент
     });
 
-    it('should return null when peeking empty stack', () => {
+    it('Если просматривается пустой стек, то возвращается null', () => {
+      // Arrange
       const stack = new Stack<number>();
+
+      // Act & Assert
       expect(stack.peek()).toBeNull();
     });
   });
 
   describe('isEmpty', () => {
-    it('should correctly report empty status', () => {
+    it('Если стек пустой, то isEmpty возвращает true, иначе false', () => {
+      // Arrange
       const stack = new Stack<number>();
+
+      // Act & Assert
       expect(stack.isEmpty()).toBe(true);
 
       stack.push(1);
@@ -103,8 +138,11 @@ describe('Stack', () => {
   });
 
   describe('getSize', () => {
-    it('should return correct size', () => {
+    it('Если в стек добавляются и удаляются элементы, то getSize возвращает корректный размер', () => {
+      // Arrange
       const stack = new Stack<number>();
+
+      // Act & Assert
       expect(stack.getSize()).toBe(0);
 
       stack.push(1);
@@ -124,42 +162,54 @@ describe('Stack', () => {
   });
 
   describe('printStack', () => {
-    it('should not throw error when called', () => {
+    it('Если вызывается printStack, то метод не выбрасывает исключение', () => {
+      // Arrange
       const stack = new Stack<number>();
-      expect(() => stack.printStack()).not.toThrow();
+
+      // Act & Assert
+      expect(() => stack.toString()).not.toThrow();
 
       stack.push(1);
       stack.push(2);
-      expect(() => stack.printStack()).not.toThrow();
+      expect(() => stack.toString()).not.toThrow();
     });
 
-    it('should handle empty stack in print', () => {
+    it('Если вызывается printStack для пустого стека, то метод не выбрасывает исключение', () => {
+      // Arrange
       const stack = new Stack<number>();
-      expect(() => stack.printStack()).not.toThrow();
+
+      // Act & Assert
+      expect(() => stack.toString()).not.toThrow();
     });
   });
 
   describe('Integration tests', () => {
-    it('should work with string type', () => {
+    it('Если стек используется для строк, то все операции работают корректно', () => {
+      // Arrange
       const stack = new Stack<string>();
 
+      // Act
       stack.push('a');
       stack.push('b');
       stack.push('c');
 
+      // Assert
       expect(stack.pop()).toBe('c');
       expect(stack.peek()).toBe('b');
       expect(stack.getSize()).toBe(2);
     });
 
-    it('should handle complex objects', () => {
+    it('Если стек используется для сложных объектов, то все операции работают корректно', () => {
+      // Arrange
       const stack = new Stack<{ name: string; age: number }>();
       const person1 = { name: 'Alice', age: 25 };
       const person2 = { name: 'Bob', age: 30 };
 
+      // Act
       stack.push(person1);
       stack.push(person2);
 
+      // Assert
       expect(stack.pop()).toEqual(person2);
       expect(stack.peek()).toEqual(person1);
     });
