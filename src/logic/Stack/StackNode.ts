@@ -8,4 +8,4 @@ class StackNode<T> {
   }
 }
 
-export default StackNode
+export default StackNode;

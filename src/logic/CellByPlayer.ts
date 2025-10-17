@@ -1,5 +1,5 @@
-import Player from "../types/Player";
-import Cell from "../types/Cell";
+import Player from "../../types/Player";
+import Cell from "../../types/Cell";
 
 export default function CellByPlayer(player: Player) {
   switch (player) {

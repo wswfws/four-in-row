@@ -1,9 +1,9 @@
 import GamePole from "./GamePole";
-import Player from "../types/Player";
-import PoleSize from "../types/PoleSize";
-import PositiveNumber from "../types/PositiveNumber";
+import Player from "../../types/Player";
+import PoleSize from "../../types/PoleSize";
+import PositiveNumber from "../../types/PositiveNumber";
 import CellByPlayer from "./CellByPlayer";
-import GameHistoryPoint from "../types/GameHistoryPoint";
+import GameHistoryPoint from "../../types/GameHistoryPoint";
 import Stack from "./Stack/Stack";
 
 export default class Game {
