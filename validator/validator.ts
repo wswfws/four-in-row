@@ -1,5 +1,5 @@
 import Game from "../src/logic/Game";
-import PoleSize from "../types/PoleSize";
+import PoleSize from "../src/types/PoleSize";
 
 const size: PoleSize = {height: 6, width: 7};
 

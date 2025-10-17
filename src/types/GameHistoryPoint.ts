@@ -1,4 +1,4 @@
-import GamePole from "../src/logic/GamePole";
+import GamePole from "../logic/GamePole";
 import Player from "./Player";
 
 type GameHistoryPoint = {

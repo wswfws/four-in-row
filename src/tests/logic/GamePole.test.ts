@@ -1,6 +1,6 @@
-import PoleSize from "../../../types/PoleSize";
+import PoleSize from "../../types/PoleSize";
 import GamePole from "../../logic/GamePole";
-import Cell from "../../../types/Cell";
+import Cell from "../../types/Cell";
 
 describe('GamePole', () => {
   describe('Constructor', () => {

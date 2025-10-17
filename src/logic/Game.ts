@@ -1,9 +1,9 @@
 import GamePole from "./GamePole";
-import Player from "../../types/Player";
-import PoleSize from "../../types/PoleSize";
-import PositiveNumber from "../../types/PositiveNumber";
+import Player from "../types/Player";
+import PoleSize from "../types/PoleSize";
+import PositiveNumber from "../types/PositiveNumber";
 import CellByPlayer from "./CellByPlayer";
-import GameHistoryPoint from "../../types/GameHistoryPoint";
+import GameHistoryPoint from "../types/GameHistoryPoint";
 import Stack from "./Stack/Stack";
 
 export default class Game {
@@ -21,6 +21,10 @@ export default class Game {
     this.player = this.player === Player.firstPlayer
       ? Player.secondPlayer
       : Player.firstPlayer;
+  }
+
+  getCurrentPlayer(){
+    return this.player;
   }
 
   move(column: PositiveNumber) {
@@ -47,6 +51,10 @@ export default class Game {
     this.pole = lastState.pole;
 
     return lastState.move;
+  }
+
+  toArray() {
+    return this.pole.toArray();
   }
 
 }

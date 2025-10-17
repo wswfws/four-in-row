@@ -1,6 +1,6 @@
 import CellByPlayer from "../../logic/CellByPlayer";
-import Player from "../../../types/Player";
-import Cell from "../../../types/Cell";
+import Player from "../../types/Player";
+import Cell from "../../types/Cell";
 
 describe('CellByPlayer', () => {
   it('Если передается Player.firstPlayer, то возвращается Cell.FirstPlayer', () => {

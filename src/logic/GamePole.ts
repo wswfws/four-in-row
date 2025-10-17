@@ -1,5 +1,5 @@
-import Cell from "../../types/Cell";
-import PoleSize from "../../types/PoleSize";
+import Cell from "../types/Cell";
+import PoleSize from "../types/PoleSize";
 
 export default class GamePole {
   private pole: Cell[][] = [];
@@ -61,6 +61,10 @@ export default class GamePole {
       }).join(" "))
     }
     return result.join("\n");
+  }
+
+  toArray(): Cell[][]{
+    return structuredClone(this.pole).reverse();
   }
 
 }
