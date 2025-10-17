@@ -97,10 +97,25 @@
     transition: background-color 0.2s;
 }
 
+.redo-button{
+    padding: 12px 24px;
+    background-color: #de1946;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+.redo-button:hover{
+    background-color: #bd163a;
+}
+
 .undo-button:hover {
     background-color: #45a049;
 }
 
-.undo-button:active {
+.undo-button:active, .redo-button:active {
     transform: translateY(1px);
 }

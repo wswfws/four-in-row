@@ -34,7 +34,7 @@ const ConnectFourGame: React.FC = () => {
     }
   }, [game]);
 
-  const handleUndo = useCallback(() => {
+  const handleUndo = () => {
     if (!game) return;
 
     try {
@@ -43,7 +43,18 @@ const ConnectFourGame: React.FC = () => {
     } catch (error) {
       console.log('Невозможно отменить ход');
     }
-  }, [game]);
+  };
+
+  const handleRedo = () => {
+    if (!game) return;
+
+    try {
+      game.redo();
+      setDrawBoard(game.toArray());
+    } catch (error) {
+      console.log('Невозможно возобновить ход');
+    }
+  };
 
 
   if (!game || !drawBoard || drawBoard.length === 0) {
@@ -70,6 +81,10 @@ const ConnectFourGame: React.FC = () => {
 
       <button className="undo-button" onClick={handleUndo}>
         Отменить ход
+      </button>
+
+      <button className="redo-button" onClick={handleRedo}>
+        Возобновить ход
       </button>
     </div>
   );
