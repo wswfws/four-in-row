@@ -5,7 +5,7 @@ import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
 
-const GAME_CONFIG: PoleSize = {height: 4, width: 4};
+const GAME_CONFIG: PoleSize = {height: 6, width: 7};
 
 interface GameHistory {
   games: Game[];
