@@ -2,120 +2,178 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
-    padding: 20px;
-    font-family: Arial, sans-serif;
+    gap: 25px;
+    padding: 30px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
 }
 
 .game-info {
-    margin-bottom: 10px;
+    margin-bottom: 15px;
 }
 
-.current-player {
-    font-size: 18px;
-    font-weight: bold;
-    padding: 8px 16px;
-    border-radius: 4px;
+.current-player, .winner {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .current-player.player-1 {
-    background-color: #ffeb3b;
+    background: linear-gradient(45deg, #FFD700, #FFEB3B);
     color: #333;
 }
 
 .current-player.player-2 {
-    background-color: #f44336;
+    background: linear-gradient(45deg, #FF416C, #FF4B2B);
     color: white;
+}
+
+.winner {
+    background: linear-gradient(45deg, #00b09b, #96c93d);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
 }
 
 .board {
     display: flex;
-    flex-direction: column;
-    gap: 4px;
-    background-color: #1976d2;
-    padding: 10px;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    gap: 8px;
+    background: linear-gradient(160deg, #1a237e, #283593);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
-.row {
+.column {
     display: flex;
-    gap: 4px;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 8px;
+    padding: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.column:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.column:hover::before {
+    content: '';
+    position: absolute;
+    top: -10px;
+    bottom: -10px;
+    left: 0;
+    right: 0;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 12px;
+    z-index: 1;
+    pointer-events: none;
 }
 
 .cell {
-    width: 50px;
-    height: 50px;
-    background-color: white;
+    width: 60px;
+    height: 60px;
+    background: radial-gradient(circle at 30% 30%, #ffffff, #e3f2fd);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-.cell:hover {
-    background-color: #f5f5f5;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 -4px 8px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    position: relative;
+    z-index: 2;
 }
 
 .piece {
-    width: 44px;
-    height: 44px;
+    width: 52px;
+    height: 52px;
     border-radius: 50%;
-    animation: drop 0.3s ease-in;
+    animation: drop 0.4s ease-out;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.3);
 }
 
 @keyframes drop {
-    from {
-        transform: translateY(-300px);
+    0% {
+        transform: translateY(-500px);
+        opacity: 0;
     }
-    to {
+    100% {
         transform: translateY(0);
+        opacity: 1;
     }
 }
 
 .player-1 .piece {
-    background-color: #ffeb3b;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    background: radial-gradient(circle at 30% 30%, #FFD700, #F57F17);
 }
 
 .player-2 .piece {
-    background-color: #f44336;
-    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+    background: radial-gradient(circle at 30% 30%, #FF5252, #D32F2F);
+}
+
+.action-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.undo-button, .redo-button, .restart-button {
+    padding: 14px 28px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    overflow: hidden;
 }
 
 .undo-button {
-    padding: 12px 24px;
-    background-color: #4caf50;
+    background: linear-gradient(45deg, #4CAF50, #8BC34A);
     color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.2s;
 }
 
-.redo-button{
-    padding: 12px 24px;
-    background-color: #de1946;
+.redo-button {
+    background: linear-gradient(45deg, #FF416C, #FF4B2B);
     color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.2s;
-}
-.redo-button:hover{
-    background-color: #bd163a;
 }
 
-.undo-button:hover {
-    background-color: #45a049;
+.restart-button {
+    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    color: white;
 }
 
-.undo-button:active, .redo-button:active {
+.undo-button:hover, .redo-button:hover, .restart-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.undo-button:active, .redo-button:active, .restart-button:active {
     transform: translateY(1px);
+}
+
+.undo-button:disabled, .redo-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }

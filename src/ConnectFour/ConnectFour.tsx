@@ -77,16 +77,14 @@ const ConnectFourGame: React.FC = () => {
       </div>
 
       <div className="board">
-        {board.map((row, rowIndex) => (
-          <div key={rowIndex} className="row">
-            {row.map((cell, colIndex) => (
-              <CellElem
-                key={`${rowIndex}-${colIndex}`}
-                cell={cell}
-                rowIndex={rowIndex}
-                colIndex={colIndex}
-                handleColumnClick={handleColumnClick}
-              />
+        {Array.from({length: board[0].length}).map((_, colIndex) => (
+          <div
+            key={colIndex}
+            className="column"
+            onClick={() => handleColumnClick(colIndex)}
+          >
+            {board.map((row, rowIndex) => (
+              <CellElem key={`${rowIndex}-${colIndex}`} cell={row[colIndex]}/>
             ))}
           </div>
         ))}
