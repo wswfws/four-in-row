@@ -40,12 +40,14 @@ export default class Game {
     return this.pole.toArray();
   }
 
-  getWinner() {
-    if (this.pole.hasFour(Player.firstPlayer)) {
-      return Player.firstPlayer;
+  getWinner(): [Player, Move[]] | null {
+    const firstHasFour = this.pole.hasFour(Player.firstPlayer);
+    if (firstHasFour.found) {
+      return [Player.firstPlayer, firstHasFour.coordinates!];
     }
-    if (this.pole.hasFour(Player.secondPlayer)) {
-      return Player.secondPlayer;
+    const secondHasFour = this.pole.hasFour(Player.secondPlayer);
+    if (secondHasFour.found) {
+      return [Player.secondPlayer, secondHasFour.coordinates!];
     }
     return null;
   }

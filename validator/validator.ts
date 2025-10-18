@@ -4,9 +4,9 @@ import GameState from "../src/types/GameState";
 import Move from "../src/types/Move";
 import Player from "../src/types/Player";
 
-const size: PoleSize = {height: 6, width: 7};
+const default_size: PoleSize = {height: 6, width: 7};
 
-function validate(moves: number[]) {
+export default function validate(moves: number[], size = default_size) {
 
   let game = new Game(size);
   const result = {
@@ -21,32 +21,34 @@ function validate(moves: number[]) {
 
   for (let move_id = 0; move_id < moves.length; move_id++) {
 
-    const [move, newGame] = game.move(moves[move_id]);
+    const currentPlayer = game.getCurrentPlayer();
+    let [move, newGame] = game.move(moves[move_id] - 1);
+    move = [move[0] + 1, move[1] + 1];
     game = newGame;
 
-    if (game.getCurrentPlayer() === Player.firstPlayer) {
+    if (currentPlayer === Player.firstPlayer) {
       moveHistoryFirstPlayer.push(move);
     } else {
       moveHistorySecondPlayer.push(move);
     }
 
-    const winner = game.getWinner();
+    const winnerState = game.getWinner();
     const isDraw = game.isDraw();
 
-    if (winner) {
+    if (winnerState) {
       result[`step_${move_id + 1}`] = {
         player_1: structuredClone(moveHistoryFirstPlayer),
         player_2: structuredClone(moveHistorySecondPlayer),
         board_state: "win",
         winner: {
-          who: winner === Player.firstPlayer ? "player_1" : "player_2",
-          positions: [[0, 0], [0, 0], [0, 0], [0, 0]],
+          who: winnerState[0] === Player.firstPlayer ? "player_1" : "player_2",
+          positions: winnerState[1].map(cord => [cord[0] + 1, cord[1] + 1]),
         }
       }
       return result;
     }
     if (isDraw) {
-      result[`step_${move_id}`] = {
+      result[`step_${move_id + 1}`] = {
         player_1: structuredClone(moveHistoryFirstPlayer),
         player_2: structuredClone(moveHistorySecondPlayer),
         board_state: "draw",
@@ -54,15 +56,11 @@ function validate(moves: number[]) {
       return result;
     }
 
-    result[`step_${move_id}`] = {
+    result[`step_${move_id + 1}`] = {
       player_1: structuredClone(moveHistoryFirstPlayer),
       player_2: structuredClone(moveHistorySecondPlayer),
       board_state: "pending",
     }
-
-    // console.log(`#move ${move.join("#")}`);
-    // console.log(game.toString());
-    // console.log("--------------------------------");
   }
 
   return result;

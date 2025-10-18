@@ -80,33 +80,42 @@ export default class GamePole {
     return this.usedCells === this.size.height * this.size.width;
   }
 
-  hasFour(player: Player): boolean {
+  hasFour(player: Player): { found: boolean, coordinates?: Move[] } {
     const cellToFind = CellByPlayer(player);
     const {width, height} = this.size;
 
-    const checkSequence = (startRow: number, startCol: number, dr: number, dc: number): boolean => {
+    const checkSequence = (startRow: number, startCol: number, dr: number, dc: number): Move[] | null => {
+      const sequence = [] as Move[];
       for (let i = 0; i < 4; i++) {
         const row = startRow + i * dr;
         const col = startCol + i * dc;
         if (row < 0 || row >= height || col < 0 || col >= width ||
           this.pole[row][col] !== cellToFind) {
-          return false;
+          return null;
         }
+        sequence.push([row, col]);
       }
-      return true;
+      return sequence;
     };
 
     for (let row = 0; row < height; row++) {
       for (let col = 0; col < width; col++) {
-        if (checkSequence(row, col, 0, 1) ||  // горизонталь
-          checkSequence(row, col, 1, 0) ||  // вертикаль
-          checkSequence(row, col, 1, 1) ||  // диагональ ↘
-          checkSequence(row, col, 1, -1)) { // диагональ ↙
-          return true;
+        const directions = [
+          {dr: 0, dc: 1},   // горизонталь →
+          {dr: 1, dc: 0},   // вертикаль ↓
+          {dr: 1, dc: 1},   // диагональ ↘
+          {dr: 1, dc: -1}   // диагональ ↙
+        ];
+
+        for (const {dr, dc} of directions) {
+          const sequence = checkSequence(row, col, dr, dc);
+          if (sequence) {
+            return {found: true, coordinates: sequence};
+          }
         }
       }
     }
 
-    return false;
+    return {found: false};
   }
 }

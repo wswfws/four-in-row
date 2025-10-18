@@ -5,7 +5,7 @@ import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
 
-const GAME_CONFIG: PoleSize = {height: 3, width: 3};
+const GAME_CONFIG: PoleSize = {height: 4, width: 4};
 
 interface GameHistory {
   games: Game[];
@@ -22,7 +22,7 @@ const ConnectFourGame: React.FC = () => {
   const board = currentGame.toArray();
   const currentPlayer = currentGame.getCurrentPlayer();
   const isPlayer1 = currentPlayer === Player.firstPlayer;
-  const winner = currentGame.getWinner();
+  const winner = currentGame.getWinner()?.at(0) as Player | null;
   const isDraw = currentGame.isDraw();
 
   const canUndo = gameHistory.currentIndex > 0;
