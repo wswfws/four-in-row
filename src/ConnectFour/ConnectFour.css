@@ -1,5 +1,4 @@
 :root {
-    /* Colors */
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --board-gradient: linear-gradient(160deg, #1a237e, #283593);
     --player1-gradient: linear-gradient(45deg, #FFD700, #FFEB3B);
