@@ -5,16 +5,6 @@ import PositiveNumber from "../types/PositiveNumber";
 import CellByPlayer from "./CellByPlayer";
 import Move from "../types/Move";
 
-type GameState = {
-  player_1: Move[];
-  player_2: Move[];
-  board_state: "waiting" | "pending" | "win" | "draw";
-  winner: {
-    who: "player_1" | "player_2",
-    positions: [Move, Move, Move, Move],
-  }
-}
-
 export default class Game {
   private readonly pole: GamePole;
   private readonly player: Player;
@@ -67,9 +57,6 @@ export default class Game {
   canMove(column: PositiveNumber): boolean {
     return this.pole.hasSpaceInColumn(column);
   }
-
-  getState
-
 }
 
 
