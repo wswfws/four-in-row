@@ -67,21 +67,21 @@ const ConnectFourGame: React.FC = () => {
     <div className="connect-four">
       <div className="game-info">
         {winner ? (
-          <div className={`winner player-${winner === Player.firstPlayer ? '1' : '2'}`}>
+          <div className={`status-message winner player-${winner === Player.firstPlayer ? '1' : '2'}`}>
             Победил: {winner === Player.firstPlayer ? 'Жёлтый' : 'Красный'}!
           </div>
         ) : isDraw ? (
-          <div className="draw">
+          <div className="status-message draw">
             Ничья!
           </div>
         ) : (
-          <div className={`current-player player-${isPlayer1 ? '1' : '2'}`}>
+          <div className={`status-message current-player player-${isPlayer1 ? '1' : '2'}`}>
             Текущий игрок: {isPlayer1 ? 'Жёлтый' : 'Красный'}
           </div>
         )}
       </div>
 
-      <div className={`board ${isDraw || winner ? "board-disable" : ""}`}>
+      <div className={`board ${isDraw || winner ? "board-disabled" : ""}`}>
         {Array.from({length: board[0].length}).map((_, colIndex) => (
           <div
             key={colIndex}
@@ -97,20 +97,23 @@ const ConnectFourGame: React.FC = () => {
 
       <div className="action-buttons">
         <button
-          className="undo-button"
+          className="action-button undo-button"
           onClick={handleUndo}
           disabled={!canUndo}
         >
           Отменить ход
         </button>
         <button
-          className="redo-button"
+          className="action-button redo-button"
           onClick={handleRedo}
           disabled={!canRedo}
         >
           Возобновить ход
         </button>
-        <button className="restart-button" onClick={handleRestart}>
+        <button
+          className="action-button restart-button"
+          onClick={handleRestart}
+        >
           Новая игра
         </button>
       </div>
