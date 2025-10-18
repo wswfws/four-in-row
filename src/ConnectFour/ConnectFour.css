@@ -39,10 +39,29 @@
     animation: pulse 2s infinite;
 }
 
+.draw {
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 25px;
+    background: linear-gradient(45deg, #FF9800, #FF5722);
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    animation: pulse 2s infinite;
+}
+
 @keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
 }
 
 .board {
@@ -53,6 +72,10 @@
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     border: 3px solid rgba(255, 255, 255, 0.1);
+}
+
+.board-disable {
+    pointer-events: none;
 }
 
 .column {

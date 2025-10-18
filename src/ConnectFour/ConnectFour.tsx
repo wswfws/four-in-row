@@ -5,7 +5,7 @@ import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
 
-const GAME_CONFIG: PoleSize = {height: 6, width: 7};
+const GAME_CONFIG: PoleSize = {height: 3, width: 3};
 
 interface GameHistory {
   games: Game[];
@@ -23,13 +23,14 @@ const ConnectFourGame: React.FC = () => {
   const currentPlayer = currentGame.getCurrentPlayer();
   const isPlayer1 = currentPlayer === Player.firstPlayer;
   const winner = currentGame.getWinner();
+  const isDraw = currentGame.isDraw();
 
   const canUndo = gameHistory.currentIndex > 0;
   const canRedo = gameHistory.currentIndex < gameHistory.games.length - 1;
 
   const handleColumnClick = useCallback((columnIndex: number) => {
     if (!winner && currentGame.canMove(columnIndex)) {
-      const nextGame = currentGame.move(columnIndex);
+      const [_, nextGame] = currentGame.move(columnIndex);
       setGameHistory(prev => ({
         games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
         currentIndex: prev.currentIndex + 1
@@ -69,6 +70,10 @@ const ConnectFourGame: React.FC = () => {
           <div className={`winner player-${winner === Player.firstPlayer ? '1' : '2'}`}>
             Победил: {winner === Player.firstPlayer ? 'Жёлтый' : 'Красный'}!
           </div>
+        ) : isDraw ? (
+          <div className="draw">
+            Ничья!
+          </div>
         ) : (
           <div className={`current-player player-${isPlayer1 ? '1' : '2'}`}>
             Текущий игрок: {isPlayer1 ? 'Жёлтый' : 'Красный'}
@@ -76,7 +81,7 @@ const ConnectFourGame: React.FC = () => {
         )}
       </div>
 
-      <div className="board">
+      <div className={`board ${isDraw || winner ? "board-disable" : ""}`}>
         {Array.from({length: board[0].length}).map((_, colIndex) => (
           <div
             key={colIndex}

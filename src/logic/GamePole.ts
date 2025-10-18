@@ -2,9 +2,11 @@ import Cell from "../types/Cell";
 import PoleSize from "../types/PoleSize";
 import Player from "../types/Player";
 import CellByPlayer from "./CellByPlayer";
+import Move from "../types/Move";
 
 export default class GamePole {
   private pole: Cell[][] = [];
+  private usedCells: number = 0;
 
   constructor(public size: PoleSize) {
     this.restartPole()
@@ -31,13 +33,15 @@ export default class GamePole {
     return this.pole.at(-1)![column] === Cell.Empty;
   }
 
-  setInColumnFirstEmptyRow(column: number, cell: Cell) {
+  setInColumnFirstEmptyRow(column: number, cell: Cell): [Move, GamePole] {
     for (let row = 0; row < this.size.height; row++) {
       if (this.pole[row][column] === Cell.Empty) {
 
         const newGamePole = this.copy();
+        newGamePole.usedCells++;
         newGamePole.pole[row][column] = cell;
-        return newGamePole;
+
+        return [[row, column], newGamePole];
       }
     }
     throw new RangeError("Empty cell doesn't exist, you can check it by `hasSpaceInColumn`");
@@ -46,6 +50,7 @@ export default class GamePole {
   copy() {
     const pole = new GamePole(this.size);
     pole.pole = structuredClone(this.pole);
+    pole.usedCells = this.usedCells;
     return pole;
   }
 
@@ -69,6 +74,10 @@ export default class GamePole {
 
   toArray(): Cell[][] {
     return structuredClone(this.pole).reverse();
+  }
+
+  isFull(): boolean {
+    return this.usedCells === this.size.height * this.size.width;
   }
 
   hasFour(player: Player): boolean {

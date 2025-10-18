@@ -3,9 +3,20 @@ import Player from "../types/Player";
 import PoleSize from "../types/PoleSize";
 import PositiveNumber from "../types/PositiveNumber";
 import CellByPlayer from "./CellByPlayer";
+import Move from "../types/Move";
+
+type GameState = {
+  player_1: Move[];
+  player_2: Move[];
+  board_state: "waiting" | "pending" | "win" | "draw";
+  winner: {
+    who: "player_1" | "player_2",
+    positions: [Move, Move, Move, Move],
+  }
+}
 
 export default class Game {
-  private pole: GamePole;
+  private readonly pole: GamePole;
   private readonly player: Player;
 
   constructor(public size: PoleSize, player = Player.firstPlayer, pole: GamePole | null = null) {
@@ -17,18 +28,18 @@ export default class Game {
     return this.player;
   }
 
-  move(column: PositiveNumber) {
+  move(column: PositiveNumber): [Move, Game] {
     if (!this.pole.hasSpaceInColumn(column)) {
       throw new Error("Column hasn't has empty cell");
     }
 
-    const newGamePole = this.pole.setInColumnFirstEmptyRow(column, CellByPlayer(this.player));
+    const [move, newGamePole] = this.pole.setInColumnFirstEmptyRow(column, CellByPlayer(this.player));
 
-    return new Game(
+    return [move, new Game(
       this.size,
       this.player === Player.firstPlayer ? Player.secondPlayer : Player.firstPlayer,
       newGamePole
-    );
+    )];
   }
 
   toString() {
@@ -49,9 +60,15 @@ export default class Game {
     return null;
   }
 
+  isDraw() {
+    return this.pole.isFull();
+  }
+
   canMove(column: PositiveNumber): boolean {
     return this.pole.hasSpaceInColumn(column);
   }
+
+  getState
 
 }
 
