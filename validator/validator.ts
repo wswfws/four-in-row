@@ -6,7 +6,7 @@ import Player from "../src/types/Player";
 
 const default_size: PoleSize = {height: 6, width: 7};
 
-export default function validate(moves: number[], size = default_size) {
+export default function validate(moves: number[], size = default_size): { [p: string]: GameState } {
 
   let game = new Game(size);
   const result = {

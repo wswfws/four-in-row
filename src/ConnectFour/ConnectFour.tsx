@@ -1,12 +1,10 @@
 import React, {useCallback, useState} from 'react';
 import Player from '../types/Player';
-import PoleSize from '../types/PoleSize';
 import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
 import GetNextMove from "../logic/Bot";
-
-const GAME_CONFIG: PoleSize = {height: 6, width: 7};
+import {GAME_CONFIG} from "../config";
 
 interface GameHistory {
   games: Game[];
@@ -104,7 +102,7 @@ const ConnectFourGame: React.FC = () => {
         {Array.from({length: board[0].length}).map((_, colIndex) => (
           <div
             key={colIndex}
-            className="column"
+            className={`column ${currentGame.canMove(colIndex) ? "" : "column-disabled"}`}
             onClick={() => handleColumnClick(colIndex)}
           >
             {board.map((row, rowIndex) => (
