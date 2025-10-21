@@ -4,6 +4,7 @@ import PoleSize from '../types/PoleSize';
 import Game from "../logic/Game";
 import "./ConnectFour.css"
 import CellElem from "./Cell";
+import GetNextMove from "../logic/Bot";
 
 const GAME_CONFIG: PoleSize = {height: 6, width: 7};
 
@@ -17,6 +18,7 @@ const ConnectFourGame: React.FC = () => {
     games: [new Game(GAME_CONFIG)],
     currentIndex: 0
   });
+  const [mode, setMode] = useState<"bot" | "player">();
 
   const currentGame = gameHistory.games[gameHistory.currentIndex];
   const board = currentGame.toArray();
@@ -28,21 +30,29 @@ const ConnectFourGame: React.FC = () => {
   const canUndo = gameHistory.currentIndex > 0;
   const canRedo = gameHistory.currentIndex < gameHistory.games.length - 1;
 
-  const handleColumnClick = useCallback((columnIndex: number) => {
+  const handleColumnClick = (columnIndex: number) => {
     if (!winner && currentGame.canMove(columnIndex)) {
       const [_, nextGame] = currentGame.move(columnIndex);
-      setGameHistory(prev => ({
-        games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
-        currentIndex: prev.currentIndex + 1
-      }));
+      if (mode === "bot" && !nextGame.isDraw() && !nextGame.getWinner()) {
+        const [_, botNextGame] = nextGame.move(GetNextMove(nextGame)[0][0]);
+        setGameHistory(prev => ({
+          games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame, botNextGame],
+          currentIndex: prev.currentIndex + 2
+        }));
+      } else {
+        setGameHistory(prev => ({
+          games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
+          currentIndex: prev.currentIndex + 1
+        }));
+      }
     }
-  }, [winner, currentGame]);
+  };
 
   const handleUndo = useCallback(() => {
     if (canUndo) {
       setGameHistory(prev => ({
         ...prev,
-        currentIndex: prev.currentIndex - 1
+        currentIndex: prev.currentIndex - (mode === "bot" ? 2 : 1)
       }));
     }
   }, [canUndo]);
@@ -51,7 +61,7 @@ const ConnectFourGame: React.FC = () => {
     if (canRedo) {
       setGameHistory(prev => ({
         ...prev,
-        currentIndex: prev.currentIndex + 1
+        currentIndex: prev.currentIndex + (mode === "bot" ? 2 : 1)
       }));
     }
   }, [canRedo]);
@@ -62,6 +72,13 @@ const ConnectFourGame: React.FC = () => {
       currentIndex: 0
     });
   }, []);
+
+  if (!mode) {
+    return <div>
+      <button onClick={() => setMode("player")}>2 человека</button>
+      <button onClick={() => setMode("bot")}>против бота</button>
+    </div>
+  }
 
   return (
     <div className="connect-four">
@@ -117,6 +134,7 @@ const ConnectFourGame: React.FC = () => {
           Новая игра
         </button>
       </div>
+      <button className="action-button" onClick={() => console.log(gameHistory)}>log</button>
     </div>
   );
 };
