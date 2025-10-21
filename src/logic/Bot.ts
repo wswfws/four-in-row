@@ -12,7 +12,7 @@ export default function GetNextMove(game: Game, depth = 3): [Move, number] {
     if (game.canMove(col)) {
       if (depth > 1) {
         const [, _game] = game.move(col);
-        const [_bestMove, _bestScore] = GetNextMove(_game, depth - 1);
+        const [, _bestScore] = GetNextMove(_game, depth - 1);
         if (-_bestScore > bestScore) {
           bestMove = [col, 0] as Move;
           bestScore = -_bestScore;

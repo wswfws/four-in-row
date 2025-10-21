@@ -32,9 +32,9 @@ const ConnectFourGame: React.FC = () => {
 
   const handleColumnClick = (columnIndex: number) => {
     if (!winner && currentGame.canMove(columnIndex)) {
-      const [_, nextGame] = currentGame.move(columnIndex);
+      const [, nextGame] = currentGame.move(columnIndex);
       if (mode === "bot" && !nextGame.isDraw() && !nextGame.getWinner()) {
-        const [_, botNextGame] = nextGame.move(GetNextMove(nextGame)[0][0]);
+        const [, botNextGame] = nextGame.move(GetNextMove(nextGame)[0][0]);
         setGameHistory(prev => ({
           games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame, botNextGame],
           currentIndex: prev.currentIndex + 2
@@ -55,7 +55,7 @@ const ConnectFourGame: React.FC = () => {
         currentIndex: prev.currentIndex - (mode === "bot" ? 2 : 1)
       }));
     }
-  }, [canUndo]);
+  }, [mode, canUndo]);
 
   const handleRedo = useCallback(() => {
     if (canRedo) {
@@ -64,7 +64,7 @@ const ConnectFourGame: React.FC = () => {
         currentIndex: prev.currentIndex + (mode === "bot" ? 2 : 1)
       }));
     }
-  }, [canRedo]);
+  }, [mode, canRedo]);
 
   const handleRestart = useCallback(() => {
     setGameHistory({
