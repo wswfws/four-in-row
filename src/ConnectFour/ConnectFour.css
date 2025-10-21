@@ -150,11 +150,11 @@
     color: white;
 }
 
-.undo-button {
+.green-button {
     background: linear-gradient(45deg, #4CAF50, #8BC34A);
 }
 
-.redo-button {
+.red-button {
     background: linear-gradient(45deg, #FF416C, #FF4B2B);
 }
 

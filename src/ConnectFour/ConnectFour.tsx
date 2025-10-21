@@ -74,9 +74,11 @@ const ConnectFourGame: React.FC = () => {
   }, []);
 
   if (!mode) {
-    return <div>
-      <button onClick={() => setMode("player")}>2 человека</button>
-      <button onClick={() => setMode("bot")}>против бота</button>
+    return <div className="connect-four" style={{height: "90vh", paddingTop: "20vh"}}>
+      <div className="action-buttons">
+        <button className="action-button green-button" onClick={() => setMode("player")}>2 человека</button>
+        <button className="action-button red-button" onClick={() => setMode("bot")}>против бота</button>
+      </div>
     </div>
   }
 
@@ -114,14 +116,14 @@ const ConnectFourGame: React.FC = () => {
 
       <div className="action-buttons">
         <button
-          className="action-button undo-button"
+          className="action-button green-button"
           onClick={handleUndo}
           disabled={!canUndo}
         >
           Отменить ход
         </button>
         <button
-          className="action-button redo-button"
+          className="action-button red-button"
           onClick={handleRedo}
           disabled={!canRedo}
         >
@@ -134,7 +136,6 @@ const ConnectFourGame: React.FC = () => {
           Новая игра
         </button>
       </div>
-      <button className="action-button" onClick={() => console.log(gameHistory)}>log</button>
     </div>
   );
 };
