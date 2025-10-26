@@ -1,12 +1,11 @@
 import Game from "../src/logic/Game";
-import PoleSize from "../src/types/PoleSize";
 import GameState from "../src/types/GameState";
 import Move from "../src/types/Move";
 import Player from "../src/types/Player";
+import {GAME_CONFIG} from "../src/config";
 
-const default_size: PoleSize = {height: 6, width: 7};
 
-export default function validate(moves: number[], size = default_size): { [p: string]: GameState } {
+export default function validate(moves: number[], size = GAME_CONFIG): { [p: string]: GameState } {
 
   let game = new Game(size);
   const result = {
@@ -67,6 +66,7 @@ export default function validate(moves: number[], size = default_size): { [p: st
 
 }
 
-const res = validate([1, 2, 1, 2, 3, 2])
-
-console.log(JSON.stringify(res, null, 2));
+if (require.main === module) {
+  const res = validate([1, 2, 1, 2, 3, 2])
+  console.log(JSON.stringify(res, null, 2));
+}

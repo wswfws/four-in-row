@@ -16,7 +16,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "jest",
-    "eject": "react-scripts eject"
+    "validate": "ts-node --project ./validator/tsconfig.json ./validator/CLI.ts"
   },
   "eslintConfig": {
     "extends": [
