@@ -1,6 +1,7 @@
 import Move from "../types/Move";
 import Game from "./Game";
 import Cell from "../types/Cell";
+import CellByPlayer from "./CellByPlayer";
 
 export default function GetNextMoveBot(game: Game, depth = 3): [Move, number] {
   if (depth <= 0) throw new Error("depth must be greater than 0");
@@ -29,7 +30,7 @@ export default function GetNextMoveBot(game: Game, depth = 3): [Move, number] {
         const [, recursiveScore] = GetNextMoveBot(_game, depth - 1);
         score = -recursiveScore;
       } else {
-        score = evaluatePosition(_game, botPlayer);
+        score = evaluatePosition(_game, CellByPlayer(botPlayer));
       }
 
       if (score > bestScore || (score === bestScore && Math.random() > 0.5)) {

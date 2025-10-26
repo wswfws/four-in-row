@@ -20,6 +20,26 @@
     --border-light: 2px solid rgba(255, 255, 255, 0.1);
 }
 
+@media (width < 640px) {
+    :root {
+        --spacing-sm: 4px;
+
+        --cell-size: 32px;
+        --piece-size: 28px;
+        --border-radius: 12px;
+    }
+}
+
+@media (width < 400px) {
+    :root {
+        --spacing-sm: 0;
+
+        --cell-size: 20px;
+        --piece-size: 18px;
+        --border-radius: 8px;
+    }
+}
+
 .connect-four {
     display: flex;
     flex-direction: column;
