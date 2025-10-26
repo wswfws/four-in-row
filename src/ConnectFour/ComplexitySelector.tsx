@@ -11,11 +11,9 @@ const ComplexitySelector: React.FC<Props> = ({currentComplexity, onConfirm, onCa
   const [selectedComplexity, setSelectedComplexity] = useState(currentComplexity);
 
   const complexityLabels: { [key: number]: string } = {
-    1: "Очень легко",
-    2: "Легко",
+    1: "Проще некуда",
     3: "Средне",
-    4: "Сложно",
-    5: "Очень сложно"
+    5: "Сложно",
   };
 
   return (
@@ -24,7 +22,7 @@ const ComplexitySelector: React.FC<Props> = ({currentComplexity, onConfirm, onCa
         <h2>Выберите сложность бота</h2>
 
         <div className="complexity-options">
-          {[1, 2, 3, 4, 5].map(level => (
+          {[1, 3, 5].map(level => (
             <div
               key={level}
               className={`complexity-option ${selectedComplexity === level ? 'selected' : ''}`}

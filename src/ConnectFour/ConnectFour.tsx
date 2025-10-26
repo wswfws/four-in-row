@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import Player from '../types/Player';
 import "./ConnectFour.css"
 import GameModeSelector from './GameModeSelector';
@@ -19,7 +19,8 @@ const ConnectFourGame: React.FC = () => {
   const {
     canUndo, canRedo,
     move, stepUndo, stepRedo, restart,
-    canMove, board, winner, isPlayer1, isDraw
+    canMove, board, winner, isPlayer1, isDraw,
+    isBotThinking
   } = gameController;
 
   const handleBotModeSelect = () => {
@@ -70,6 +71,7 @@ const ConnectFourGame: React.FC = () => {
       <GameBoard
         board={board}
         isGameOver={isDraw || !!winner}
+        isBotThinking={isBotThinking}
         canMove={canMove}
         onMove={move}
       />

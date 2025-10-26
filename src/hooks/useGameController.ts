@@ -15,6 +15,7 @@ const useGameController = (mode: "bot" | "player", botComplexity: number) => {
     games: [new Game(GAME_CONFIG)],
     currentIndex: 0
   });
+  const [isBotThinking, setIsBotThinking] = useState(false);
 
   const currentGame = gameHistory.games[gameHistory.currentIndex];
   const canUndo = gameHistory.currentIndex > 0;
@@ -25,20 +26,34 @@ const useGameController = (mode: "bot" | "player", botComplexity: number) => {
   const winner = currentGame.getWinner()?.at(0) as Player | null;
   const isDraw = currentGame.isDraw();
 
-  const move = (columnIndex: number) => {
+  const botMove = async (playerGame: Game) => {
+    setIsBotThinking(true);
+
+    // Даем React время обновить UI перед началом вычислений
+    await new Promise(resolve => setTimeout(resolve, 0));
+
+    const botMove = GetNextMoveBot(playerGame, botComplexity);
+    const [, botNextGame] = playerGame.move(botMove[0][0]);
+
+    setGameHistory(prev => ({
+      games: [...prev.games.slice(0, prev.currentIndex + 1), playerGame, botNextGame],
+      currentIndex: prev.currentIndex + 2
+    }));
+
+    setIsBotThinking(false);
+  }
+
+  const move = async (columnIndex: number) => {
     if (!winner && currentGame.canMove(columnIndex)) {
       const [, nextGame] = currentGame.move(columnIndex);
+
+      setGameHistory(prev => ({
+        games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
+        currentIndex: prev.currentIndex + 1
+      }));
+
       if (mode === "bot" && !nextGame.isDraw() && !nextGame.getWinner()) {
-        const [, botNextGame] = nextGame.move(GetNextMoveBot(nextGame, botComplexity)[0][0]);
-        setGameHistory(prev => ({
-          games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame, botNextGame],
-          currentIndex: prev.currentIndex + 2
-        }));
-      } else {
-        setGameHistory(prev => ({
-          games: [...prev.games.slice(0, prev.currentIndex + 1), nextGame],
-          currentIndex: prev.currentIndex + 1
-        }));
+        botMove(nextGame)
       }
     }
   };
@@ -71,7 +86,8 @@ const useGameController = (mode: "bot" | "player", botComplexity: number) => {
   return {
     canUndo, canRedo,
     move, stepUndo, stepRedo, restart,
-    canMove: currentGame.canMove, board, winner, isPlayer1, isDraw
+    board, winner, isPlayer1, isDraw,
+    isBotThinking, canMove: currentGame.canMove,
   };
 }
 export default useGameController;

@@ -5,12 +5,13 @@ import CellElem from "./Cell";
 interface Props {
   board: Cell[][];
   isGameOver: boolean;
+  isBotThinking: boolean;
   canMove: (colIndex: number) => boolean;
   onMove: (colIndex: number) => void;
 }
 
-export const GameBoard = ({board, isGameOver, canMove, onMove}: Props) => (
-  <div className={`board ${isGameOver ? "board-disabled" : ""}`}>
+export const GameBoard = ({board, isGameOver, canMove, onMove, isBotThinking}: Props) => (
+  <div className={`board ${isGameOver || isBotThinking ? "board-disabled" : ""}`}>
     {Array.from({length: board[0].length}).map((_, colIndex) => (
       <div
         key={colIndex}
