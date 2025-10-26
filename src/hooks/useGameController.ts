@@ -36,8 +36,8 @@ const useGameController = (mode: "bot" | "player", botComplexity: number) => {
     const [, botNextGame] = playerGame.move(botMove[0][0]);
 
     setGameHistory(prev => ({
-      games: [...prev.games.slice(0, prev.currentIndex + 1), playerGame, botNextGame],
-      currentIndex: prev.currentIndex + 2
+      games: [...prev.games.slice(0, prev.currentIndex + 1), botNextGame],
+      currentIndex: prev.currentIndex + 1
     }));
 
     setIsBotThinking(false);
