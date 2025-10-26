@@ -5,41 +5,48 @@ import Cell from "../types/Cell";
 export default function GetNextMoveBot(game: Game, depth = 3): [Move, number] {
   if (depth <= 0) throw new Error("depth must be greater than 0");
 
+  const botPlayer = game.getCurrentPlayer();
+
   let bestMove = [0, 0] as Move;
   let bestScore = -Infinity;
+  let hasValidMove = false;
 
   for (let col = 0; col < game.size.width; col++) {
     if (game.canMove(col)) {
+      hasValidMove = true;
+      const [, _game] = game.move(col);
+
+      const winner = _game.getWinner();
+      if (winner) {
+        if (winner[0] === botPlayer) {
+          return [[col, 0] as Move, 100000 - (3 - depth)];
+        }
+      }
+
+      let score: number;
+
       if (depth > 1) {
-        const [, _game] = game.move(col);
-        const [, _bestScore] = GetNextMoveBot(_game, depth - 1);
-        if (-_bestScore > bestScore) {
-          bestMove = [col, 0] as Move;
-          bestScore = -_bestScore;
-        }
+        const [, recursiveScore] = GetNextMoveBot(_game, depth - 1);
+        score = -recursiveScore;
       } else {
-        const [, _game] = game.move(col);
-        const score = -getScore(_game);
-        if (score > bestScore) {
-          bestMove = [col, 0] as Move;
-          bestScore = score;
-        }
+        score = evaluatePosition(_game, botPlayer);
+      }
+
+      if (score > bestScore || (score === bestScore && Math.random() > 0.5)) {
+        bestMove = [col, 0] as Move;
+        bestScore = score;
       }
     }
   }
 
-  if (bestScore === -Infinity) {
-    for (let col = 0; col < game.size.width; col++) {
-      if (game.canMove(col)) {
-        return [[col, 0] as Move, 0];
-      }
-    }
+  if (!hasValidMove) {
+    throw new Error("No valid moves available");
   }
 
   return [bestMove, bestScore];
 }
 
-function getScore(game: Game): number {
+function evaluatePosition(game: Game, botPlayer: Cell): number {
   const board = game.toArray();
   const width = game.size.width;
   const height = game.size.height;
@@ -53,7 +60,8 @@ function getScore(game: Game): number {
           board[row][col],
           board[row][col + 1],
           board[row][col + 2],
-          board[row][col + 3]
+          board[row][col + 3],
+          botPlayer
         );
       }
 
@@ -62,7 +70,8 @@ function getScore(game: Game): number {
           board[row][col],
           board[row + 1][col],
           board[row + 2][col],
-          board[row + 3][col]
+          board[row + 3][col],
+          botPlayer
         );
       }
 
@@ -71,7 +80,8 @@ function getScore(game: Game): number {
           board[row][col],
           board[row + 1][col + 1],
           board[row + 2][col + 2],
-          board[row + 3][col + 3]
+          board[row + 3][col + 3],
+          botPlayer
         );
       }
 
@@ -80,7 +90,8 @@ function getScore(game: Game): number {
           board[row][col],
           board[row + 1][col - 1],
           board[row + 2][col - 2],
-          board[row + 3][col - 3]
+          board[row + 3][col - 3],
+          botPlayer
         );
       }
     }
@@ -89,47 +100,50 @@ function getScore(game: Game): number {
   return score;
 }
 
-function evaluateLine(a: Cell, b: Cell, c: Cell, d: Cell): number {
-  let player1Count = 0;
-  let player2Count = 0;
+function evaluateLine(a: Cell, b: Cell, c: Cell, d: Cell, botPlayer: Cell): number {
+  const opponent = botPlayer === Cell.FirstPlayer ? Cell.SecondPlayer : Cell.FirstPlayer;
+
+  let botCount = 0;
+  let opponentCount = 0;
   let emptyCount = 0;
 
   [a, b, c, d].forEach(cell => {
-    if (cell === Cell.FirstPlayer) player1Count++;
-    else if (cell === Cell.SecondPlayer) player2Count++;
+    if (cell === botPlayer) botCount++;
+    else if (cell === opponent) opponentCount++;
     else emptyCount++;
   });
 
-  if (player1Count > 0 && player2Count > 0) {
+  // Если в линии есть фишки обоих игроков - линия бесполезна
+  if (botCount > 0 && opponentCount > 0) {
     return 0;
   }
 
-  if (player1Count > 0) {
-    return evaluateThreat(player1Count, emptyCount);
+  if (botCount > 0) {
+    return evaluateThreat(botCount, emptyCount);
   }
 
-  if (player2Count > 0) {
-    return -evaluateThreat(player2Count, emptyCount);
+  if (opponentCount > 0) {
+    return -evaluateThreat(opponentCount, emptyCount) * 1.1; // Немного увеличиваем вес угроз противника
   }
 
   return 0;
 }
 
 function evaluateThreat(playerCount: number, emptyCount: number): number {
-
-  const weights: { [key: number]: number } = {
-    1: 1,
-    2: 10,
-    3: 100,
-    4: 10000
-  }
-
   if (playerCount === 4) {
-    return weights[4];
+    return 10000;
   }
 
-  if (playerCount + emptyCount === 4) {
-    return weights[playerCount] || 0;
+  if (playerCount === 3 && emptyCount === 1) {
+    return 100;
+  }
+
+  if (playerCount === 2 && emptyCount === 2) {
+    return 10;
+  }
+
+  if (playerCount === 1 && emptyCount === 3) {
+    return 1;
   }
 
   return 0;
