@@ -12,6 +12,7 @@ export default class Game {
   constructor(public size: PoleSize, player = Player.firstPlayer, pole: GamePole | null = null) {
     this.pole = pole ?? new GamePole(size);
     this.player = player;
+    this.canMove = this.canMove.bind(this);
   }
 
   getCurrentPlayer() {
@@ -56,7 +57,7 @@ export default class Game {
     return this.pole.isFull();
   }
 
-  canMove(column: PositiveNumber): boolean {
+  canMove = (column: number): boolean => {
     return this.pole.hasSpaceInColumn(column);
   }
 }

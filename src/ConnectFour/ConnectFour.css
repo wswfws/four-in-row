@@ -31,6 +31,11 @@
     min-height: 100vh;
 }
 
+.connect-four.mode-selection {
+    height: 90vh;
+    padding-top: 20vh;
+}
+
 .game-info {
     margin-bottom: var(--spacing-md);
 }
@@ -92,7 +97,7 @@
     position: relative;
 }
 
-.column-disabled{
+.column-disabled {
     pointer-events: none;
 }
 

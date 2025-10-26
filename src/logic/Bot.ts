@@ -2,7 +2,7 @@ import Move from "../types/Move";
 import Game from "./Game";
 import Cell from "../types/Cell";
 
-export default function GetNextMove(game: Game, depth = 3): [Move, number] {
+export default function GetNextMoveBot(game: Game, depth = 3): [Move, number] {
   if (depth <= 0) throw new Error("depth must be greater than 0");
 
   let bestMove = [0, 0] as Move;
@@ -12,7 +12,7 @@ export default function GetNextMove(game: Game, depth = 3): [Move, number] {
     if (game.canMove(col)) {
       if (depth > 1) {
         const [, _game] = game.move(col);
-        const [, _bestScore] = GetNextMove(_game, depth - 1);
+        const [, _bestScore] = GetNextMoveBot(_game, depth - 1);
         if (-_bestScore > bestScore) {
           bestMove = [col, 0] as Move;
           bestScore = -_bestScore;
