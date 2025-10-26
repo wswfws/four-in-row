@@ -8,13 +8,7 @@ interface Props {
   canRedo: boolean;
 }
 
-export const ActionButtons: React.FC<Props> = ({
-                                                 onUndo,
-                                                 onRedo,
-                                                 onRestart,
-                                                 canUndo,
-                                                 canRedo
-                                               }) => (
+export const ActionButtons: React.FC<Props> = ({onUndo, onRedo, onRestart, canUndo, canRedo}) => (
   <div className="action-buttons">
     <button
       className="action-button green-button"

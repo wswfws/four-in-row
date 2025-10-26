@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
 import Player from '../types/Player';
 import "./ConnectFour.css"
 import GameModeSelector from './GameModeSelector';
@@ -10,7 +10,7 @@ import ComplexitySelector from "./ComplexitySelector";
 
 type GameMode = "bot" | "player";
 
-const ConnectFourGame: React.FC = () => {
+const ConnectFourGame = () => {
   const [mode, setMode] = useState<GameMode>();
   const [botComplexity, setBotComplexity] = useState(3);
   const [showComplexitySelector, setShowComplexitySelector] = useState(false);
@@ -57,14 +57,14 @@ const ConnectFourGame: React.FC = () => {
   }
 
   const getPlayerColor = (player: Player) =>
-    player === Player.firstPlayer ? 'Жёлтый' : 'Красный';
+    player === Player.FirstPlayer ? 'Жёлтый' : 'Красный';
 
   return (
     <div className="connect-four">
       <GameStatus
         winner={winner}
         isDraw={isDraw}
-        currentPlayer={isPlayer1 ? Player.firstPlayer : Player.secondPlayer}
+        currentPlayer={isPlayer1 ? Player.FirstPlayer : Player.SecondPlayer}
         getPlayerColor={getPlayerColor}
       />
 

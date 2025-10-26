@@ -3,9 +3,9 @@ import Cell from "../types/Cell";
 
 export default function CellByPlayer(player: Player): Cell {
   switch (player) {
-    case Player.firstPlayer:
+    case Player.FirstPlayer:
       return Cell.FirstPlayer;
-    case Player.secondPlayer:
+    case Player.SecondPlayer:
       return Cell.SecondPlayer;
     default:
       throw new Error("Could not find cell");

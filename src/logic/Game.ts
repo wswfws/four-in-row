@@ -9,7 +9,7 @@ export default class Game {
   private readonly pole: GamePole;
   private readonly player: Player;
 
-  constructor(public size: PoleSize, player = Player.firstPlayer, pole: GamePole | null = null) {
+  constructor(public size: PoleSize, player = Player.FirstPlayer, pole: GamePole | null = null) {
     this.pole = pole ?? new GamePole(size);
     this.player = player;
     this.canMove = this.canMove.bind(this);
@@ -28,7 +28,7 @@ export default class Game {
 
     return [move, new Game(
       this.size,
-      this.player === Player.firstPlayer ? Player.secondPlayer : Player.firstPlayer,
+      this.player === Player.FirstPlayer ? Player.SecondPlayer : Player.FirstPlayer,
       newGamePole
     )];
   }
@@ -42,13 +42,13 @@ export default class Game {
   }
 
   getWinner(): [Player, Move[]] | null {
-    const firstHasFour = this.pole.hasFour(Player.firstPlayer);
+    const firstHasFour = this.pole.hasFour(Player.FirstPlayer);
     if (firstHasFour.found) {
-      return [Player.firstPlayer, firstHasFour.coordinates!];
+      return [Player.FirstPlayer, firstHasFour.coordinates!];
     }
-    const secondHasFour = this.pole.hasFour(Player.secondPlayer);
+    const secondHasFour = this.pole.hasFour(Player.SecondPlayer);
     if (secondHasFour.found) {
-      return [Player.secondPlayer, secondHasFour.coordinates!];
+      return [Player.SecondPlayer, secondHasFour.coordinates!];
     }
     return null;
   }

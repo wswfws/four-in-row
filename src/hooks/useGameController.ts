@@ -22,7 +22,7 @@ const useGameController = (mode: "bot" | "player", botComplexity: number) => {
   const canRedo = gameHistory.currentIndex < gameHistory.games.length - 1;
   const board = currentGame.toArray();
   const currentPlayer = currentGame.getCurrentPlayer();
-  const isPlayer1 = currentPlayer === Player.firstPlayer;
+  const isPlayer1 = currentPlayer === Player.FirstPlayer;
   const winner = currentGame.getWinner()?.at(0) as Player | null;
   const isDraw = currentGame.isDraw();
 

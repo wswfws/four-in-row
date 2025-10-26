@@ -11,7 +11,7 @@ interface Props {
 export const GameStatus = ({winner, isDraw, currentPlayer, getPlayerColor}: Props) => {
   if (winner) {
     return (
-      <div className={`status-message winner player-${winner === Player.firstPlayer ? '1' : '2'}`}>
+      <div className={`status-message winner player-${winner === Player.FirstPlayer ? '1' : '2'}`}>
         Победил: {getPlayerColor(winner)}!
       </div>
     );
@@ -22,7 +22,7 @@ export const GameStatus = ({winner, isDraw, currentPlayer, getPlayerColor}: Prop
   }
 
   return (
-    <div className={`status-message current-player player-${currentPlayer === Player.firstPlayer ? '1' : '2'}`}>
+    <div className={`status-message current-player player-${currentPlayer === Player.FirstPlayer ? '1' : '2'}`}>
       Текущий игрок: {getPlayerColor(currentPlayer)}
     </div>
   );

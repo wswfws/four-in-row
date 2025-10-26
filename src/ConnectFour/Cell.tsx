@@ -1,11 +1,11 @@
 import Cell from "../types/Cell";
 import React from "react";
 
-type CellElemProps = {
+interface Props {
   cell: Cell;
 }
 
-export default function CellElem({cell}: CellElemProps) {
+export default function CellElem({cell}: Props) {
   const getCellClass = () => {
     let cellClass = 'cell';
     if (cell === Cell.FirstPlayer) {

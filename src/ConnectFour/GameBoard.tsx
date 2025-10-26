@@ -1,4 +1,3 @@
-import React from 'react';
 import Cell from "../types/Cell";
 import CellElem from "./Cell";
 

@@ -1,12 +1,10 @@
-import React from 'react';
-
 interface Props {
   onPlayerModeSelect: () => void;
   onBotModeSelect: () => void;
 }
 
 export const GameModeSelector = ({onPlayerModeSelect, onBotModeSelect}: Props) => (
-  <div className="connect-four mode-selection">
+  <div className="connect-four">
     <div className="action-buttons">
       <button
         className="action-button green-button"

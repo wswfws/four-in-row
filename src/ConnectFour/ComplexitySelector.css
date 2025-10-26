@@ -1,12 +1,3 @@
-/* Стили для выбора сложности */
-.complexity-selector {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 90vh;
-    padding-top: 10vh;
-}
-
 .complexity-content {
     background: white;
     padding: 2rem;
@@ -68,13 +59,4 @@
     border-radius: 5px;
     font-weight: bold;
     color: #333;
-}
-
-/* Стиль для синей кнопки */
-.action-button.blue-button {
-    background: linear-gradient(135deg, #2196F3, #1976D2);
-}
-
-.action-button.blue-button:hover:not(:disabled) {
-    background: linear-gradient(135deg, #1976D2, #1565C0);
 }

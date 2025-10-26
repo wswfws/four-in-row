@@ -17,7 +17,7 @@ const ComplexitySelector: React.FC<Props> = ({currentComplexity, onConfirm, onCa
   };
 
   return (
-    <div className="connect-four complexity-selector">
+    <div className="connect-four">
       <div className="complexity-content">
         <h2>Выберите сложность бота</h2>
 

@@ -25,7 +25,7 @@ export default function validate(moves: number[], size = GAME_CONFIG): { [p: str
     move = [move[0] + 1, move[1] + 1];
     game = newGame;
 
-    if (currentPlayer === Player.firstPlayer) {
+    if (currentPlayer === Player.FirstPlayer) {
       moveHistoryFirstPlayer.push(move);
     } else {
       moveHistorySecondPlayer.push(move);
@@ -40,7 +40,7 @@ export default function validate(moves: number[], size = GAME_CONFIG): { [p: str
         player_2: structuredClone(moveHistorySecondPlayer),
         board_state: "win",
         winner: {
-          who: winnerState[0] === Player.firstPlayer ? "player_1" : "player_2",
+          who: winnerState[0] === Player.FirstPlayer ? "player_1" : "player_2",
           positions: winnerState[1].map(cord => [cord[0] + 1, cord[1] + 1]),
         }
       }

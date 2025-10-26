@@ -1,6 +1,6 @@
 enum Player {
-  firstPlayer = "firstPlayer",
-  secondPlayer = "secondPlayer",
+  FirstPlayer = "FirstPlayer",
+  SecondPlayer = "SecondPlayer",
 }
 
 export default Player;

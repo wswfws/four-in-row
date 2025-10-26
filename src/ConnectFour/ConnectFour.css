@@ -48,16 +48,8 @@
     padding: var(--spacing-xl);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: var(--primary-gradient);
-    min-height: 100vh;
-}
-
-.connect-four.mode-selection {
-    height: 90vh;
-    padding-top: 20vh;
-}
-
-.game-info {
-    margin-bottom: var(--spacing-md);
+    min-height: 600px;
+    height: 100vh;
 }
 
 .status-message {
