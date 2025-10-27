@@ -108,4 +108,61 @@ describe('Game Validation Tests', () => {
       expect(() => validate(moves)).toThrow();
     });
   });
+
+  describe('Когда второй игрок выигрывает по вертикали', () => {
+    const moves = [1, 2, 3, 2, 4, 2, 5, 2];
+
+    it('ТО должен определить победу второго игрока на 8-м ходу', () => {
+      // Act
+      const result = validate(moves);
+
+      // Assert
+      const lastStepKey = Object.keys(result).pop()!;
+      expect(result[lastStepKey].board_state).toBe('win');
+      expect((result[lastStepKey] as GameStateWin).winner?.who).toBe('player_2');
+    });
+
+    it('ТО выигрышная комбинация должна быть вертикальной в колонке 2', () => {
+      // Act
+      const result = validate(moves);
+
+      // Assert
+      const lastStepKey = Object.keys(result).pop()!;
+      const winState = result[lastStepKey] as GameStateWin;
+      expect(winState.winner?.positions).toHaveLength(4);
+      // Все позиции должны быть в колонке 2
+      winState.winner?.positions.forEach(position => {
+        expect(position[1]).toBe(2);
+      });
+    });
+  });
+
+  describe('Когда игра завершается победой по диагонали', () => {
+    const moves = [1, 2, 2, 3, 4, 3, 3, 4, 4, 5, 4];
+
+    it('ТО должен определить победу первого игрока по диагонали', () => {
+      // Act
+      const result = validate(moves);
+
+      // Assert
+      const lastStepKey = Object.keys(result).pop()!;
+      expect(result[lastStepKey].board_state).toBe('win');
+      expect((result[lastStepKey] as GameStateWin).winner?.who).toBe('player_1');
+    });
+  });
+
+  describe('Когда игра ведется на нестандартном поле', () => {
+    it('ТО корректно обрабатывает победу на поле 4x4', () => {
+      // Arrange
+      const moves = [1, 2, 1, 2, 1, 2, 1];
+      const customSize = {width: 4, height: 4};
+
+      // Act
+      const result = validate(moves, customSize);
+
+      // Assert
+      const lastStepKey = Object.keys(result).pop()!;
+      expect(result[lastStepKey].board_state).toBe('win');
+    });
+  });
 });
